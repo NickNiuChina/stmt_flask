@@ -32,6 +32,7 @@ $(document).ready(function() {
     /*
         admin-student page functions
     */
+
     // ajax request test
     // $.ajax({
     //         'url': "admin/list/student",
@@ -113,9 +114,9 @@ $(document).ready(function() {
                 "data": null,
                 "render": function(data, type, row) {
                     if (data["gender"] == 1) {
-                        gender = "男";
+                        gender = "M";
                     } else {
-                        gender = "女";
+                        gender = "F";
                     }
                     return gender;
                 }
@@ -144,10 +145,10 @@ $(document).ready(function() {
 
                         var html = "<button class='btn btn-default' data-student-no=";
                         html += data["student_no"];
-                        html += " data-toggle='modal' data-target='#updateStudent'>编辑</button>"
+                        html += " data-toggle='modal' data-target='#updateStudent'>Edit</button>"
                         html += "<button class='btn btn-danger' data-student-no=";
                         html += data["student_no"];
-                        html += " data-toggle='modal' data-target='#deleteStudent'>删除</button>"
+                        html += " data-toggle='modal' data-target='#deleteStudent'>Delete</button>"
                         return html;
                     }
 
@@ -196,7 +197,7 @@ $(document).ready(function() {
         var scoreId = button.data('score-id')
         var modal = $(this)
         modal.find('#update-id').val(scoreId)
-    })
+    });
 
 
     $('#deleteScore').on('show.bs.modal', function(event) {
@@ -204,7 +205,7 @@ $(document).ready(function() {
         var scoreId = button.data('score-id')
         var modal = $(this)
         modal.find('#delete-score-id').val(scoreId)
-    })
+    });
 
     // table score list tb_scores_list
     $("#tb_scores_list").DataTable({
@@ -254,9 +255,9 @@ $(document).ready(function() {
                 "data": null,
                 "render": function(data, type, row) {
                     if (data["gender"] == 1) {
-                        gender = "男";
+                        gender = "M";
                     } else {
-                        gender = "女";
+                        gender = "F";
                     }
                     return gender;
                 }
@@ -285,10 +286,10 @@ $(document).ready(function() {
 
                         var html = "<button class='btn btn-default' data-student-no=";
                         html += data["student_no"];
-                        html += " data-toggle='modal' data-target='#updateStudent'>编辑</button>"
+                        html += " data-toggle='modal' data-target='#updateStudent'>Edit</button>"
                         html += "<button class='btn btn-danger' data-student-no=";
                         html += data["student_no"];
-                        html += " data-toggle='modal' data-target='#deleteStudent'>删除</button>"
+                        html += " data-toggle='modal' data-target='#deleteStudent'>Delete</button>"
                         return html;
                     }
 
@@ -320,14 +321,14 @@ $(document).ready(function() {
                 modal.find('#update-gender').val(student.gender)
             }
         })
-    })
+    });
 
     $('#deleteTeacher').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)
         var teacherNo = button.data('teacher-no')
         var modal = $(this)
         modal.find('#delete-teacher-no').val(teacherNo)
-    })
+    });
 
     // table score list tb_teachers_list
     $("#tb_teachers_list").DataTable({
@@ -392,9 +393,9 @@ $(document).ready(function() {
                 "data": null,
                 "render": function(data, type, row) {
                     if (data["gender"] == 1) {
-                        gender = "男";
+                        gender = "M";
                     } else {
-                        gender = "女";
+                        gender = "F";
                     }
                     return gender;
                 }
@@ -410,10 +411,10 @@ $(document).ready(function() {
 
                         var html = "<button class='btn btn-default' data-teacher-no=";
                         html += data["teacher_no"];
-                        html += " data-toggle='modal' data-target='#updateTeacher'>编辑</button>"
+                        html += " data-toggle='modal' data-target='#updateTeacher'>Edit</button>"
                         html += "<button class='btn btn-danger' data-teacher-no=";
                         html += data["teacher_no"];
-                        html += " data-toggle='modal' data-target='#deleteTeacher'>删除</button>"
+                        html += " data-toggle='modal' data-target='#deleteTeacher'>Delete</button>"
                         return html;
                     }
 
@@ -423,10 +424,10 @@ $(document).ready(function() {
     });
 
     /*
-        admin-user functions
+        user management page functions
     */
 
-    // table score list tb_users_list
+    // table user list tb_users_list
     $("#tb_users_list").DataTable({
         "dom": '<"row"<"col"B><"col"f>>rt<"row"<"col"i><"col"p>>',
         "responsive": true,
@@ -458,7 +459,7 @@ $(document).ready(function() {
         "order": [1, "asc"],
         "ajax": {
             'url': "admin/list/user",
-            'type': 'get',
+            'type': 'post',
             'data': {},
             'dataType': 'json',
         },
@@ -482,9 +483,9 @@ $(document).ready(function() {
                 "data": null,
                 "render": function(data, type, row) {
                     if (data["user_type"] == '1') {
-                        return "管理员";
+                        return "admin";
                     } else {
-                        return "用户";
+                        return "user";
                     }
                 }
             },
@@ -500,9 +501,9 @@ $(document).ready(function() {
                 "data": null,
                 "render": function(data, type, row) {
                     if (data["status"] == '2') {
-                        return "已禁用";
+                        return "Disabled";
                     } else {
-                        return "已启用";
+                        return "Enabled";
                     }
                 }
             },
@@ -525,10 +526,10 @@ $(document).ready(function() {
                         if (data["username"] != 'admin') {
                             if (data["status"] == '1') {
                                 status = "success";
-                                op = "启用";
+                                op = "Enabled";
                             } else {
                                 status = "danger";
-                                op = "禁用";
+                                op = "Disabled";
                             }
                             var html = "<button class='btn btn-" + status + "' data-username=";
                             html += data["username"];
@@ -536,7 +537,7 @@ $(document).ready(function() {
                             html += " id='changeStatus'>" + op + "</button>"
                             html += "<button class='btn btn-danger' data-username=";
                             html += data["username"];
-                            html += " data-toggle='modal' data-target='#deleteUser'>删除</button>"
+                            html += " data-toggle='modal' data-target='#deleteUser'>Delete</button>"
                             return html;
                         } else {
                             return "HIDED!";

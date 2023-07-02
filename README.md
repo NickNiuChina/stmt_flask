@@ -11,3 +11,11 @@ This is a for a demo app.
 - Install requirement. [pip install -r requirement.txt]()
 - Import the default data. [flask --app myproject init-db]()
 - Run the app. [start.bat]() or [start.sh]() on Linux server.
+
+## Disclaimer
+This project is developed for demo purpose and it's not supposed to be used in real application.
+
+## Todo
+- i18n
+- logging
+- SQLAlchemy

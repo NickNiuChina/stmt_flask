@@ -11,12 +11,12 @@
 		<div class="container-fluid">
 		<div class="row mb-2">
 			<div class="col-sm-6">
-			<h1 class="m-0">教师管理页面</h1>
+			<h1 class="m-0">Teacher management</h1>
 			</div><!-- /.col -->
 			<div class="col-sm-6">
 			<ol class="breadcrumb float-sm-right">
 				<li class="breadcrumb-item"><a href="{{ url_for('stmt.index') }}">Home</a></li>
-				<li class="breadcrumb-item active">主页</li>
+				<li class="breadcrumb-item active">Main</li>
 			</ol>
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 
 						<div class="col-sm-5">
 							<button type="button" class="btn btn-primary" data-toggle="modal"
-								data-target="#addTeacher">添加教师</button>
+								data-target="#addTeacher">Add teacher</button>
 						</div>
 
 					</div>
@@ -43,20 +43,20 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>教师工号</th>
-									<th>姓名</th>
-									<th>性别</th>
-									<th>编辑</th>
+									<th>TeacherNo</th>
+									<th>Name</th>
+									<th>Gender</th>
+									<th>Operation</th>
 								</tr>
 							</thead>
 
 							<tfoot>
 								<tr>
 									<th>#</th>
-									<th>教师工号</th>
-									<th>姓名</th>
-									<th>性别</th>
-									<th>编辑</th>
+									<th>TeacherNo</th>
+									<th>Name</th>
+									<th>Gender</th>
+									<th>Operation</th>
 								</tr>
 							</tfoot>
 						</table>
@@ -74,7 +74,7 @@
 				<div class="modal-content">
 					<form action="${pageContext.request.contextPath}/admin/addTeacher">
 						<div class="modal-header">
-							<h4 class="modal-title" id="myModalLabel">录入教师信息</h4>
+							<h4 class="modal-title" id="myModalLabel">Register teacher</h4>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -82,29 +82,29 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label for="teacher-no" class="control-label">教师工号:</label> <input
+								<label for="teacher-no" class="control-label">Teacher No:</label> <input
 									type="text" class="form-control" name="teacherNo"
 									id="teacher-no">
 							</div>
 
 							<div class="form-group">
-								<label for="teacher-name" class="control-label">教师名:</label> <input
+								<label for="teacher-name" class="control-label">No:</label> <input
 									type="text" class="form-control" name="teacherName"
 									id="teacher-name">
 							</div>
 
 							<div class="form-group">
 
-								<label for="gender" class="control-label">性别:</label> <select
+								<label for="gender" class="control-label">Gender:</label> <select
 									class="form-control" name="gender" id="gender">
-									<option value="1">男</option>
-									<option value="2">女</option>
+									<option value="1">Male</option>
+									<option value="2">Female</option>
 								</select>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-							<button type="submit" class="btn btn-primary">提交</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-primary">Confirm</button>
 						</div>
 					</form>
 				</div>
@@ -120,7 +120,7 @@
 				<div class="modal-content">
 					<form action="${pageContext.request.contextPath}/admin/updateTeacher">
 						<div class="modal-header">
-							<h4 class="modal-title" id="myModalLabel">更新教师信息</h4>
+							<h4 class="modal-title" id="myModalLabel">Update teacher info</h4>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -128,30 +128,30 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label for="update-teacher-no" class="control-label">教师工号:</label>
+								<label for="update-teacher-no" class="control-label">Teacher No:</label>
 								<input type="text" readonly class="form-control" name="teacherNo"
 									id="update-teacher-no">
 							</div>
 
 							<div class="form-group">
-								<label for="update-teacher-name" class="control-label">姓名:</label>
+								<label for="update-teacher-name" class="control-label">Name:</label>
 								<input type="text" class="form-control" name="teacherName"
 									id="update-teacher-name">
 							</div>
 
 							<div class="form-group">
 
-								<label for="update-gender" class="control-label">性别:</label> <select
+								<label for="update-gender" class="control-label">Gender:</label> <select
 									class="form-control" name="gender" id="update-gender">
-									<option value="1">男</option>
-									<option value="2">女</option>
+									<option value="1">Male</option>
+									<option value="2">Female</option>
 								</select>
 							</div>
 
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-							<button type="submit" class="btn btn-primary">保存</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-primary">Confirm</button>
 						</div>
 					</form>
 				</div>
@@ -165,7 +165,7 @@
 				<div class="modal-content">
 					<form action="${pageContext.request.contextPath}/admin/deleteTeacher">
 						<div class="modal-header">
-							<h4 class="modal-title">删除教师信息</h4>
+							<h4 class="modal-title">Delete teacher info</h4>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -180,8 +180,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-							<button type="submit" class="btn btn-danger">删除</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-danger">Delete</button>
 						</div>
 					</form>
 				</div>

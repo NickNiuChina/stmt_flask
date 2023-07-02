@@ -2,7 +2,7 @@
     {# Brand Logo #}
     <a href="javascript:void(0);" οnclick="method()" class="brand-link">
       <img src="{{ url_for('static', filename='img/AdminLogo.png') }}" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light"> 管理系统 </span>
+      <span class="brand-text font-weight-light"> Admin System </span>
     </a>
 
     {# Sidebar #}
@@ -16,7 +16,7 @@
           <li class="nav-item">
             <a href="{{ url_for('stmt.index') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
-              <p>首页</p>
+              <p>Welcome</p>
             </a>
           </li>
 
@@ -25,32 +25,32 @@
           <li class="nav-item">
             <a href="{{ url_for('stmt.adminStudent') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
-              <p>学生管理</p>
+              <p>Student Management</p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="{{ url_for('stmt.adminScore') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
-              <p>成绩管理</p>
+              <p>Score Management</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ url_for('stmt.adminCourse') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
-              <p>课程管理</p>
+              <p>Course Management</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ url_for('stmt.adminTeacher') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
-              <p>教师管理</p>
+              <p>Teacher Management</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ url_for('stmt.adminUser') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
-              <p>账号管理</p>
+              <p>Account Management</p>
             </a>
           </li>
         {% endif %}

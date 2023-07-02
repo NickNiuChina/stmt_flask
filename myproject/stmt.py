@@ -11,6 +11,8 @@ from flask import current_app
 from flask import jsonify
 import datetime
 import re
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
 
 from myproject.auth import login_required
 from myproject.db import get_db
@@ -486,6 +488,7 @@ def getTeacher():
 
 
 # user page
+
 @bp.route("/adminUser")
 @login_required
 def adminUser():
@@ -540,49 +543,89 @@ def deleteUser():
     flash(success, 'success')    
     return redirect(url_for("stmt.adminUser"))
 
-@bp.route("/admin/add/user", methods=("GET", "POST"))
+@bp.route("/admin/user/addStudent", methods=("POST",))
 @login_required
-def addUser():
-    """ add a user by user info
+def addStudentUser():
+    """ add a student user account
         
     Returns:
         result: redirect to user admin page with failure/sucess
     """
     # arguments
-    # post
     if request.method == "POST":
-        username = request.values.get('username')
-        # op = request.values.get('op')
+        username = request.values.get('student_username')
+        student_no = request.values.get('student_no')
+        password = request.values.get('password')
 
     # get
     if request.method == "GET":
-        username = request.args.get('username') 
-        # op = request.args.get('op') 
+        username = request.args.get('student_username') 
+        student_no = request.args.get('student_no') 
+        password = request.args.get('password') 
+    
+    db = get_db()
+    cur = db.cursor()
+    result = cur.execute(
+        "select * from tb_user where username=%s or student_no=%s",(username, student_no)
+    )
+    
+    if result > 0:
+        danger = "Duplicated username or student account has been created before: " + str([username, student_no])
+        flash(danger, 'danger')    
+        return redirect(url_for("stmt.adminUser"))
+    
+    result = cur.execute(
+        "select * from tb_student where student_no=%s",(student_no,)
+    )
+    
+    if result < 1:
+        danger = "Student info has not been enrolled: " + str([student_no,])
+        flash(danger, 'danger')    
+        return redirect(url_for("stmt.adminUser"))
+    
+    result = cur.execute(
+        "insert into tb_user"
+        " (user_type, username, password, student_no, status)"
+        " VALUES (%s, %s, %s, %s, %s)", (0, username, generate_password_hash(password), student_no, 1)
+    )
+    db.commit()
+    if result < 1:
+        danger = "Something wrong when add user. User: " + str([username, student_no])
+        flash(danger, 'danger')    
+        return redirect(url_for("stmt.adminUser"))   
+    
+    success = "Add student user successfully. User: " + str([username, student_no, password, result])
+    flash(success, 'success')
+    return redirect(url_for("stmt.adminUser"))   
+
+@bp.route("/admin/user/addTeacher", methods=("POST",))
+@login_required
+def addTeachertUser():
+    """ add a teacher user account
+        
+    Returns:
+        result: redirect to user admin page with failure/sucess
+    """
+    # arguments
+    if request.method == "POST":
+        username = request.values.get('student-username')
+        student_no = request.values.get('student_no')
+        password = request.values.get('password')
+
+    # get
+    if request.method == "GET":
+        username = request.args.get('student-username') 
+        student_no = request.args.get('student_no') 
+        password = request.args.get('password') 
+
     if username == "admin":
         error = "You can not delete admin!"
         flash(error, 'danger')
         return redirect(url_for("stmt.adminUser"))
     
-    db = get_db()
-    cur = db.cursor()
-    cur.execute(
-        "SELECT username FROM tb_user where username=%s", (username,)
-    )
-    user = cur.fetchone()
-    if user is None:
-        error = "您尝试删除的用户不存在: " + username
-        flash(error, 'danger')
-        return redirect(url_for("stmt.adminUser"))
-
-    result = cur.execute("delete from tb_user where username = %s", (username,))
-    db.commit()
-    if result < 1:
-        error = "Failed during delete user. User: " + username
-        flash(error, 'danger')
-        return redirect(url_for("stmt.adminUser"))
-    success = "Delete user successfully. User: " + username
+    success = "Add teacher user successfully. User: " + str([username, student_no, password])
     flash(success, 'success')    
-    return redirect(url_for("stmt.adminUser"))       
+    return redirect(url_for("stmt.adminUser"))    
 
 @bp.route("/admin/user/toggle", methods=("GET", "POST"))
 @login_required

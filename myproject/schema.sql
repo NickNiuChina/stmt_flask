@@ -1,18 +1,25 @@
--- /*
---  Navicat Premium Data Transfer
+-- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
 --
--- Source Server         : 175.24.15.179
--- Source Server Type    : MySQL
--- Source Server Version : 80021
--- Source Host           : 175.24.15.179:3306
--- Source Schema         : student_manage
---
--- Target Server Type    : MySQL
--- Target Server Version : 80021
--- File Encoding         : 65001
---
--- Date: 02/12/2020 16:50:44
--- */
+-- Host: 127.0.0.1    Database: stmtflask
+-- ------------------------------------------------------
+-- Server version	8.0.32
+
+-- /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+-- /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+-- /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+-- /*!50503 SET NAMES utf8 */;
+-- /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+-- /*!40103 SET TIME_ZONE='+00:00' */;
+-- /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+-- /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+-- /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+-- /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+-- ----------------------------------------------------------------
+-- The commnet only support by '-- '
+-- ----------------------------------------------------------------
+
+
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -24,8 +31,8 @@ DROP TABLE IF EXISTS `tb_test`;
 CREATE TABLE `tb_test` (
    `idtest` int NOT NULL AUTO_INCREMENT,
    `name` varchar(45) NOT NULL DEFAULT 'unknown',
-   `address` varchar(100) NOT NULL DEFAULT '未知',
-   `notes` varchar(200) NOT NULL DEFAULT '未知',
+   `address` varchar(100) NOT NULL DEFAULT 'unkonw',
+   `notes` varchar(200) NOT NULL DEFAULT 'unkonw',
    PRIMARY KEY (`idtest`)
  ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -44,13 +51,13 @@ insert into `tb_test` values(6,'Kayden Kross', 'USA', 'Actress');
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_student`;
 CREATE TABLE `tb_student` (
-   `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '学号',
-   `student_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '姓名',
-   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '个性签名',
-   `id_card` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '身份证号',
-   `age` int DEFAULT NULL COMMENT '年龄',
-   `gender` tinyint DEFAULT NULL COMMENT '性别，1男，2女',
-   `year` char(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '入学年份',
+   `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Student No',
+   `student_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Name',
+   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Self Label',
+   `id_card` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'ID',
+   `age` int DEFAULT NULL COMMENT 'Age',
+   `gender` tinyint DEFAULT NULL COMMENT 'Gender，1M，2F',
+   `year` char(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Enrollment Year',
    `create_time` datetime DEFAULT (CURRENT_DATE),
    `update_time` datetime DEFAULT (CURRENT_DATE),
    PRIMARY KEY (`student_no`) USING BTREE,
@@ -118,9 +125,9 @@ DROP TABLE IF EXISTS `tb_teacher`;
 CREATE TABLE `tb_teacher`  (
   `teacher_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `teacher_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `gender` tinyint NULL DEFAULT NULL COMMENT '1男，2女',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `update_time` datetime(0) NULL DEFAULT NULL,
+  `gender` tinyint NULL DEFAULT NULL COMMENT 'Gender: 1M，2F',
+  `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
+  `update_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
   PRIMARY KEY (`teacher_no`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -144,12 +151,12 @@ INSERT INTO `tb_teacher` VALUES ('T011', '赵婧学', 1, '2023-12-02 00:00:00', 
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_course`;
 CREATE TABLE `tb_course`  (
-  `course_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '课程号',
-  `course_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '课程名',
-  `teacher_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '授课老师',
-  `student_num` int NULL DEFAULT NULL COMMENT '选课人数',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `update_time` datetime(0) NULL DEFAULT NULL,
+  `course_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Course id',
+  `course_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Course',
+  `teacher_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Teacher',
+  `student_num` int NULL DEFAULT NULL COMMENT 'Student num',
+  `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
+  `update_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
   PRIMARY KEY (`course_no`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -174,12 +181,12 @@ INSERT INTO `tb_course` VALUES ('C012', '音乐', 'T010', 0, '2020-12-02 00:00:0
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_score`;
 CREATE TABLE `tb_score`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键自增',
-  `course_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '课程号',
-  `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学号',
-  `score` float NULL DEFAULT NULL COMMENT '分数',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `update_time` datetime(0) NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID autoincrement',
+  `course_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Course no',
+  `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'student id',
+  `score` float NULL DEFAULT NULL COMMENT 'Score',
+  `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
+  `update_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -324,14 +331,14 @@ INSERT INTO `tb_score` VALUES (120, 'C012', 'S010', 17, '2020-12-02 00:00:00', '
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user` (
    `user_id` int NOT NULL AUTO_INCREMENT,
-   `user_type` tinyint DEFAULT NULL COMMENT '1管理员，0学生',
-   `username` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '账号',
-   `password` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
-   `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '学号',
-   `display_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '显示的名字',
-   `status` tinyint NOT NULL DEFAULT '1' COMMENT '账号状态，1正常，2封禁',
-   `create_time` datetime DEFAULT NULL,
-   `update_time` datetime DEFAULT NULL,
+   `user_type` tinyint DEFAULT NULL COMMENT '1admin，0student',
+   `username` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Account name',
+   `password` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'password',
+   `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'student_No',
+   `display_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'display name',
+   `status` tinyint NOT NULL DEFAULT '1' COMMENT 'Status，1enabled，2disabled',
+   `create_time` datetime DEFAULT (CURRENT_DATE),
+   `update_time` datetime DEFAULT (CURRENT_DATE),
    PRIMARY KEY (`user_id`) USING BTREE,
    UNIQUE KEY `username_UNIQUE` (`username`)
  ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
@@ -363,7 +370,7 @@ CREATE TABLE `tb_login_history`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NULL DEFAULT NULL,
   `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
