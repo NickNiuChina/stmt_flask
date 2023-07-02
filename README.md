@@ -15,6 +15,14 @@ This is a for a demo app.
 ## Disclaimer
 This project is developed for demo purpose and it's not supposed to be used in real application.
 
+## Progress
+- Welcome page              done
+- Student management page   done
+- Score management page     in progress
+- Course management page    in progress
+- Teacher management page   in progress
+- Account management page   Done
+
 ## Todo
 - i18n
 - logging
