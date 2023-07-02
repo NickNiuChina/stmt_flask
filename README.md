@@ -1,6 +1,6 @@
-## Flask academy management app based on adminLTE 3
+## Flask school management app based on adminLTE 3
 
-This is a for a demo app.
+This is a demo app.
 
 ## Installation
 
