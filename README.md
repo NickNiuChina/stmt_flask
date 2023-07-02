@@ -1,21 +1,13 @@
-## A student management application written in Python/Flask based on adminLte
+## Flask academy management app based on adminLTE 3
 
-Original source code from https://github.com/pallets/flask/tree/master/examples/tutorial
+This is a for a demo app.
 
-## Docker instructions
+## Installation
 
-To create a docker image execute: 
+- Install MySQL
 
-`docker build . -t flaskr`
-
-To run the docker image execute:
-
-`docker run -p 5000:5000 flaskr` and visit with your browser http://localhost:5000
-
-To run unit tests inside the container execute:
-
-`docker run -it flaskr /bin/sh`
-
-and then in the new command promt run
-
-`pip install pytest && pytest`
+- Create a database and update the database connection info( in config.py)to match the db you just created.
+- Create your virtual environment.
+- Install requirement. [pip install -r requirement.txt]()
+- Import the default data. [flask --app myproject init-db]()
+- Run the app. [start.bat]() or [start.sh]() on Linux server.
