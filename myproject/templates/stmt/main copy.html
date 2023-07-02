@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}主页{% endblock %}
+{% block content %}
+	
+	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+		<h1 class="page-header">欢迎您, {{ session["display_name"] }}！</h1>
+
+		<div class="row placeholders">
+			<div class="col-xs-6 col-sm-3 placeholder">
+				<div class="imgBox">
+					<img src="{{ url_for('static', filename='img/nav1.jpg') }}">
+					<h1 class="imgText">
+						{% if session["stu_num"] %}
+							{{ session['stu_num'] }}
+						{% else %}
+							0
+						{% endif %}
+					</h1>
+				</div>
+				<h4>学生总数</h4>
+				<span class="text-muted">Student</span>
+			</div>
+
+			<div class="col-xs-6 col-sm-3 placeholder">
+				<div class="imgBox">
+					<img src="{{ url_for('static', filename='img/nav2.jpg') }}">
+					<h1 class="imgText">
+					{% if session['course_num'] %}
+						{{session['course_num']}}
+					{% else %}
+						0
+					{% endif %}
+					</h1>
+				</div>
+				<h4>课程总数</h4>
+				<span class="text-muted">Class</span>
+			</div>
+
+			<div class="col-xs-6 col-sm-3 placeholder">
+				<div class="imgBox">
+					<img src="{{ url_for('static', filename='img/nav3.jpg') }}">
+					<h1 class="imgText">
+					{% if onlineUsers %}
+						{{ onlineUsers }}
+					{% else %}
+						0
+					{% endif %}
+					</h1>
+				</div>
+				<h4>在线人数</h4>
+				<span class="text-muted">Teacher</span>
+			</div>
+
+			<div class="col-xs-6 col-sm-3 placeholder">
+				<div class="imgBox">
+					<img src="{{ url_for('static', filename='img/nav4.jpg') }}">
+					<h1 class="imgText">
+					{% if runningDays %}
+						{{ runningDays }}
+					{% else %}
+						Error!
+					{% endif %}
+					</h1>
+				</div>
+				<h4>运行天数</h4>
+				<span class="text-muted">Days</span>
+			</div>
+
+		</div>
+
+		<h2 class="sub-header">TOP</h2>
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>TOP</th>
+						<th>学号</th>
+						<th>姓名</th>
+						<th>科目</th>
+						<th>分数</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for score in topScores %}
+					<tr>
+						<td> {{ loop.index }} </td>
+						<td>{{ score.student_no }}</td>
+						<td>{{ score.student_name }}</td>
+						<td>{{ score.course_name }}</td>
+						<td>{{ score.score }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}

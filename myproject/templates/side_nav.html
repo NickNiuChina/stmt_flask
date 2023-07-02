@@ -1,0 +1,18 @@
+<ul class="nav nav-sidebar">
+                    
+                    <li class="nav-item"><a href="{{ url_for('stmt.index') }}">首页</a></li>
+                    {# if userType == 1 #}
+                    {% if session['user_type'] == 1 %}
+                    <li class="nav-item"><a href="{{ url_for('stmt.adminStudents') }}">学生管理</a></li>
+                    <li class="nav-item"><a href="{{ url_for('stmt.adminScore') }}">成绩管理</a></li>
+                    <li class="nav-item"><a href="{{ url_for('stmt.adminCourse') }}">课程管理</a></li>
+                    <li class="nav-item"><a href="{{ url_for('stmt.adminTeacher') }}">教师管理</a></li>
+                    <li class="nav-item"><a href="{{ url_for('stmt.adminUser') }}">账号管理</a></li>
+                    {% endif %}
+
+                    {# if userType == 0 #}
+                    {% if session['user_type'] == 0 %}
+                    <li class="nav-item"><a href="{{ url_for('stmt.userScore') }}">成绩查询</a></li>
+                    <li class="nav-item"><a href="{{ url_for('stmt.userInfo') }}">档案查询</a></li>                                           
+                    {% endif %}
+                </ul>

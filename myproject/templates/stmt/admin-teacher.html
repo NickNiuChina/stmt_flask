@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block title %}教师管理{% endblock %}
+{% block content %}
+
+{# Content Wrapper. Contains page content #}
+<div class="content-wrapper">
+
+	{# Content Header (Page header) #}
+	<div class="content-header">
+		<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+			<h1 class="m-0">教师管理页面</h1>
+			</div><!-- /.col -->
+			<div class="col-sm-6">
+			<ol class="breadcrumb float-sm-right">
+				<li class="breadcrumb-item"><a href="{{ url_for('stmt.index') }}">Home</a></li>
+				<li class="breadcrumb-item active">主页</li>
+			</ol>
+			</div>
+		</div>
+		</div>
+	</div>
+	{#  content-header END #}
+
+    <section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<div class="row">
+
+						<div class="col-sm-5">
+							<button type="button" class="btn btn-primary" data-toggle="modal"
+								data-target="#addTeacher">添加教师</button>
+						</div>
+
+					</div>
+
+
+					<div class="table-responsive">
+						<table id="tb_teachers_list" class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>教师工号</th>
+									<th>姓名</th>
+									<th>性别</th>
+									<th>编辑</th>
+								</tr>
+							</thead>
+
+							<tfoot>
+								<tr>
+									<th>#</th>
+									<th>教师工号</th>
+									<th>姓名</th>
+									<th>性别</th>
+									<th>编辑</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+		<!-- add teacher -->
+		<div class="modal fade" id="addTeacher" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form action="${pageContext.request.contextPath}/admin/addTeacher">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">录入教师信息</h4>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>							
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="teacher-no" class="control-label">教师工号:</label> <input
+									type="text" class="form-control" name="teacherNo"
+									id="teacher-no">
+							</div>
+
+							<div class="form-group">
+								<label for="teacher-name" class="control-label">教师名:</label> <input
+									type="text" class="form-control" name="teacherName"
+									id="teacher-name">
+							</div>
+
+							<div class="form-group">
+
+								<label for="gender" class="control-label">性别:</label> <select
+									class="form-control" name="gender" id="gender">
+									<option value="1">男</option>
+									<option value="2">女</option>
+								</select>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-primary">提交</button>
+						</div>
+					</form>
+				</div>
+
+
+			</div>
+		</div>
+
+		<!-- update teacher -->
+		<div class="modal fade" id="updateTeacher" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form action="${pageContext.request.contextPath}/admin/updateTeacher">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">更新教师信息</h4>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>							
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="update-teacher-no" class="control-label">教师工号:</label>
+								<input type="text" readonly class="form-control" name="teacherNo"
+									id="update-teacher-no">
+							</div>
+
+							<div class="form-group">
+								<label for="update-teacher-name" class="control-label">姓名:</label>
+								<input type="text" class="form-control" name="teacherName"
+									id="update-teacher-name">
+							</div>
+
+							<div class="form-group">
+
+								<label for="update-gender" class="control-label">性别:</label> <select
+									class="form-control" name="gender" id="update-gender">
+									<option value="1">男</option>
+									<option value="2">女</option>
+								</select>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-primary">保存</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- delete Teacher -->
+		<div class="modal fade" id="deleteTeacher" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form action="${pageContext.request.contextPath}/admin/deleteTeacher">
+						<div class="modal-header">
+							<h4 class="modal-title">删除教师信息</h4>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>							
+						</div>
+						<div class="modal-body">
+							确认要删除该教师的所有信息吗（该操作不可逆）？
+							<div class="form-group hidden">
+								<label for="delete-teacher-no" class="control-label">工号:</label>
+								<input type="text" class="form-control" name="teacherNo"
+									id="delete-teacher-no">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-danger">删除</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+{% endblock %}
