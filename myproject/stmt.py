@@ -243,6 +243,21 @@ def getStudent():
     students = cur.fetchall()
     return jsonify(students)
 
+@bp.route("/admin/getStudents", methods=("GET", "POST"))
+@login_required
+def getStudents():
+    """admin-stutents API
+
+    Returns:
+        students: all students object
+    """
+    cur = get_db().cursor()
+    
+    # students list
+    cur.execute("select * from tb_student")
+    students = cur.fetchall()
+    return jsonify(students)
+
 def is_valid_id_card(id_card):
     ''' 校验是否为正确的身份证号码 '''
     pattern = '[1-9][0-9]{14}([0-9]{2}[0-9X])?'
@@ -579,7 +594,7 @@ def addStudentUser():
     )
     
     if result < 1:
-        danger = "Student info has not been enrolled: " + str([student_no,])
+        danger = "Student info has not been enrolled: " + str([student_no,username,password])
         flash(danger, 'danger')    
         return redirect(url_for("stmt.adminUser"))
     

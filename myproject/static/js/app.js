@@ -568,6 +568,26 @@ $(document).ready(function() {
         // });
     });
 
+    $('#addStudentUser').on('shown.bs.modal', function(event) {
+        var modal = $(this);
+        $.ajax({
+            url: 'admin/getStudents',
+            type: "post",
+            success: function(result) {
+                // var students = result[0];
+                // console.log(result);
+                var i = 0;
+                for (i = 0; i < Object.keys(result).length; i++) {
+                    student_no = result[i]["student_no"];
+                    student_name = result[i]["student_name"];
+                    modal.find("select[name='student_no']").append("<option value=" + student_no + ">" + student_name + "</option>");
+                };
+                // $('#mySelect').append($('<option>').val('head').text('Head'));
+                // <option value="${student.studentNo }">${student.studentName }</option>
+            }
+        })
+    });
+
     // $('#clientStatusModal').on('shown.bs.modal',
     //     function(e) {
     //         storename = $(e.relatedTarget).parent().parent().children(".dtr-control").text();
