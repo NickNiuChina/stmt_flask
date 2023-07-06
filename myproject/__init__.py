@@ -5,6 +5,8 @@ import datetime, time
 from myproject import stmt
 from flask import session
 import config
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.wrappers import Response
 
 
 def create_app(test_config=None):
@@ -38,6 +40,12 @@ def create_app(test_config=None):
     #     os.makedirs(app.instance_path)
     # except OSError:
     #     pass
+
+    # for reverse proxy
+    app.wsgi_app = DispatcherMiddleware(
+        Response('Not Found', status=404),
+        {'/stmt': app.wsgi_app}
+    )
 
     # hello test page
     @app.route("/hello")
