@@ -29,9 +29,9 @@ $(document).ready(function() {
         }
     });
 
-    /*
-        admin-student page functions
-    */
+    /* **********************************************
+       admin-student page functions
+    ********************************************** */
 
     // ajax request test
     // $.ajax({
@@ -188,119 +188,9 @@ $(document).ready(function() {
         modal.find('#delete-student-no').val(studentNo);
     });
 
-
-    /*
-        admin-score page functions
-    */
-    $('#updateScore').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget)
-        var scoreId = button.data('score-id')
-        var modal = $(this)
-        modal.find('#update-id').val(scoreId)
-    });
-
-
-    $('#deleteScore').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget)
-        var scoreId = button.data('score-id')
-        var modal = $(this)
-        modal.find('#delete-score-id').val(scoreId)
-    });
-
-    // table score list tb_scores_list
-    $("#tb_scores_list").DataTable({
-        "dom": 'Blfrtip',
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": false,
-        // "responsive": true, "lengthChange": true, "autoWidth": true,
-        "buttons": ["excel", "colvis"],
-        "lengthMenu": [10, 50, 100, "1000"],
-        "processing": true,
-        "serverSide": true,
-        "destroy": true,
-        "paging": true,
-        "ordering": true,
-        "order": [1, "asc"],
-        "ajax": {
-            'url': "admin/list/score",
-            'type': 'post',
-            'data': {},
-            'dataType': 'json',
-        },
-        "columnDefs": [{
-                "targets": 0,
-                "data": null,
-                "orderable": false,
-                render: function(data, type, row, meta) {
-                    return meta.row + 1;
-                }
-            },
-            {
-                "targets": 1,
-                "data": null,
-                "render": function(data, type, row) {
-                    return data["student_no"];
-                }
-            },
-            {
-                "targets": 2,
-                "data": null,
-                "render": function(data, type, row) {
-                    return data["student_name"];
-                }
-            },
-            {
-                "targets": 3,
-                "data": null,
-                "render": function(data, type, row) {
-                    if (data["gender"] == 1) {
-                        gender = "M";
-                    } else {
-                        gender = "F";
-                    }
-                    return gender;
-                }
-            },
-            {
-                "targets": 4,
-                "data": null,
-                "render": function(data, type, row) {
-                    return data["age"];
-                }
-            },
-            {
-                "targets": 5,
-                "data": null,
-                "render": function(data, type, row) {
-                    return data["year"];
-                }
-            },
-            {
-                "targets": 6,
-                "orderable": false,
-                "data": null,
-                "render": function(data, type, row) {
-                    // console.log(data[5]);
-                    if (data["student_no"]) {
-
-                        var html = "<button class='btn btn-default' data-student-no=";
-                        html += data["student_no"];
-                        html += " data-toggle='modal' data-target='#updateStudent'>Edit</button>"
-                        html += "<button class='btn btn-danger' data-student-no=";
-                        html += data["student_no"];
-                        html += " data-toggle='modal' data-target='#deleteStudent'>Delete</button>"
-                        return html;
-                    }
-
-                }
-            },
-        ],
-    });
-
-    /*
-        admin-teacher page functions
-    */
+    /* **********************************************
+       admin-teacher page functions
+    ********************************************** */
 
     $('#updateTeacher').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)
@@ -330,7 +220,7 @@ $(document).ready(function() {
         modal.find('#delete-teacher-no').val(teacherNo)
     });
 
-    // table score list tb_teachers_list
+    // table teacher list tb_teachers_list
     $("#tb_teachers_list").DataTable({
         "dom": '<"row"<"col"B><"col"f>>rt<"row"<"col"i><"col"p>>',
         "responsive": true,
@@ -423,9 +313,123 @@ $(document).ready(function() {
         ],
     });
 
-    /*
-        user management page functions
-    */
+    /* **********************************************
+       admin course page functions
+    ********************************************** */
+
+
+    /* **********************************************
+       admin score page functions
+    ********************************************** */
+    $('#updateScore').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget)
+        var scoreId = button.data('score-id')
+        var modal = $(this)
+        modal.find('#update-id').val(scoreId)
+    });
+
+
+    $('#deleteScore').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget)
+        var scoreId = button.data('score-id')
+        var modal = $(this)
+        modal.find('#delete-score-id').val(scoreId)
+    });
+
+    $("#tb_scores_list").DataTable({
+        "dom": 'Blfrtip',
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        // "responsive": true, "lengthChange": true, "autoWidth": true,
+        "buttons": ["excel", "colvis"],
+        "lengthMenu": [10, 50, 100, "1000"],
+        "processing": true,
+        "serverSide": true,
+        "destroy": true,
+        "paging": true,
+        "ordering": true,
+        "order": [1, "asc"],
+        "ajax": {
+            'url': "admin/list/score",
+            'type': 'post',
+            'data': {},
+            'dataType': 'json',
+        },
+        "columnDefs": [{
+                "targets": 0,
+                "data": null,
+                "orderable": false,
+                render: function(data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "targets": 1,
+                "data": null,
+                "render": function(data, type, row) {
+                    return data["student_no"];
+                }
+            },
+            {
+                "targets": 2,
+                "data": null,
+                "render": function(data, type, row) {
+                    return data["student_name"];
+                }
+            },
+            {
+                "targets": 3,
+                "data": null,
+                "render": function(data, type, row) {
+                    if (data["gender"] == 1) {
+                        gender = "M";
+                    } else {
+                        gender = "F";
+                    }
+                    return gender;
+                }
+            },
+            {
+                "targets": 4,
+                "data": null,
+                "render": function(data, type, row) {
+                    return data["age"];
+                }
+            },
+            {
+                "targets": 5,
+                "data": null,
+                "render": function(data, type, row) {
+                    return data["year"];
+                }
+            },
+            {
+                "targets": 6,
+                "orderable": false,
+                "data": null,
+                "render": function(data, type, row) {
+                    // console.log(data[5]);
+                    if (data["student_no"]) {
+
+                        var html = "<button class='btn btn-default' data-student-no=";
+                        html += data["student_no"];
+                        html += " data-toggle='modal' data-target='#updateStudent'>Edit</button>"
+                        html += "<button class='btn btn-danger' data-student-no=";
+                        html += data["student_no"];
+                        html += " data-toggle='modal' data-target='#deleteStudent'>Delete</button>"
+                        return html;
+                    }
+
+                }
+            },
+        ],
+    });
+
+
+    /* **********************************************
+        admin user page functions
+    ********************************************** */
 
     // table user list tb_users_list
     $("#tb_users_list").DataTable({
