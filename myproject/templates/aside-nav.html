@@ -22,10 +22,25 @@
 
         {# if userType == 1 #}
         {% if session['user_type'] == 1 %}
+
           <li class="nav-item">
             <a href="{{ url_for('stmt.adminStudent') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>Student Management</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ url_for('stmt.adminTeacher') }}" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>Teacher Management</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ url_for('stmt.adminCourse') }}" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>Course Management</p>
             </a>
           </li>
 
@@ -35,24 +50,14 @@
               <p>Score Management</p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="{{ url_for('stmt.adminCourse') }}" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>Course Management</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url_for('stmt.adminTeacher') }}" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>Teacher Management</p>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a href="{{ url_for('stmt.adminUser') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>Account Management</p>
             </a>
           </li>
+
         {% endif %}
 
         {# if userType == 0 #}

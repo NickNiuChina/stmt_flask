@@ -22,9 +22,7 @@
 
 
 SET NAMES utf8mb4;
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for tb_test
@@ -159,8 +157,7 @@ CREATE TABLE `tb_course`  (
   `student_num` int NULL DEFAULT NULL COMMENT 'Student num',
   `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
   `update_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
-  PRIMARY KEY (`course_no`) USING BTREE,
-  CONSTRAINT `fk_course_teacher` FOREIGN KEY (teacher_no) REFERENCES tb_teacher (teacher_no) ON DELETE RESTRICT ON UPDATE CASCADE
+  PRIMARY KEY (`course_no`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -190,9 +187,7 @@ CREATE TABLE `tb_score`  (
   `score` float NULL DEFAULT NULL COMMENT 'Score',
   `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
   `update_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
-  PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT `fk_score_course` FOREIGN KEY (course_no) REFERENCES tb_course (course_no) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `fk_score_student` FOREIGN KEY (student_no) REFERENCES tb_student (student_no) ON DELETE RESTRICT ON UPDATE CASCADE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -376,8 +371,7 @@ CREATE TABLE `tb_login_history`  (
   `user_id` int NULL DEFAULT NULL,
   `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
-  PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT `fk_login-history_user` FOREIGN KEY (user_id) REFERENCES tb_user (user_id) ON DELETE RESTRICT ON UPDATE CASCADE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -393,7 +387,5 @@ INSERT INTO `tb_login_history` VALUES (9, 1, '0:0:0:0:0:0:0:1', '2020-12-02 00:0
 INSERT INTO `tb_login_history` VALUES (10, 7, '0:0:0:0:0:0:0:1', '2020-12-02 00:00:00');
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET FOREIGN_KEY_CHECKS = 1;
 

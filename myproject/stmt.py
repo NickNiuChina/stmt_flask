@@ -112,7 +112,7 @@ tables = {
             'user': ['user_id', 'username', 'user_type', 'student_no', 'status'],
             }
  
-@bp.route("/admin/list/<any(course, login_history, score, student, teacher, test, user):list_object>", methods=("GET", "POST"))
+@bp.route("/admin/list/<any(login_history, student, teacher, test, user):list_object>", methods=("GET", "POST"))
 @login_required
 def list_objects(list_object):
     """common API to return all table lines
@@ -201,6 +201,9 @@ def list_objects(list_object):
     
     return data
 
+#####################
+# admin student management views
+#####################
 @bp.route("/adminStudent")
 @login_required
 def adminStudent():
@@ -422,52 +425,9 @@ def deleteStudent():
     flash(success, 'success')    
     return redirect(url_for("stmt.adminStudent"))
 
-@bp.route("/admin/searchStudents", methods=("POST",))
-@login_required
-def searchStudents():
-    """search students
-
-    Returns:
-        filtered studens
-    """
-    if request.method == "POST":
-        query = request.values.get('query')
-        print(__name__ + ": " + query)
-        return "OKKKKKKKKKKKKK"
-    # flash(error, 'danger')
-    # return redirect(url_for("stmt.adminStudents"))
-        
-    cur = get_db().cursor()
-    
-    # students list
-    update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    cur.execute("select * from tb_student")
-
-    success = "Student " + studentNo + " info has just been changed!"
-    flash(success, 'success')
-    return redirect(url_for("stmt.adminStudents"))
-
-@bp.route("/adminScore")
-@login_required
-def adminScore():
-    """admin-score page
-
-    Returns:
-        template: admin-score template
-    """
-    return render_template("stmt/admin-score.html")
-
-@bp.route("/adminCourse")
-@login_required
-def adminCourse():
-    """introduction page
-
-    Returns:
-        template: introduction template
-    """
-    return render_template("stmt/introduction.html")
-
-# admin-teacher page functions
+#####################
+# admin teacher management views
+#####################
 @bp.route("/adminTeacher")
 @login_required
 def adminTeacher():
@@ -501,8 +461,37 @@ def getTeacher():
     teachers = cur.fetchall()
     return jsonify(teachers)
 
+#####################
+# admin course management views
+#####################
 
-# user page
+@bp.route("/adminCourse")
+@login_required
+def adminCourse():
+    """introduction page
+
+    Returns:
+        template: introduction template
+    """
+    return render_template("stmt/introduction.html")
+
+#####################
+# admin score management views
+#####################
+
+@bp.route("/adminScore")
+@login_required
+def adminScore():
+    """admin-score page
+
+    Returns:
+        template: admin-score template
+    """
+    return render_template("stmt/admin-score.html")
+
+#####################
+# admin user management views
+#####################
 
 @bp.route("/adminUser")
 @login_required
