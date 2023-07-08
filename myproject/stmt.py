@@ -111,6 +111,7 @@ tables = {
             'student': ['student_no', 'student_name', 'gender', 'age', 'year'],
             'teacher': ['teacher_no', 'teacher_name', 'gender'],
             'user': ['user_id', 'username', 'user_type', 'student_no', 'status'],
+            'course': ['course_no', 'course_name', 'student_num'],
             }
  
 @bp.route("/admin/list/<any(login_history, student, teacher, test, user):list_object>", methods=("GET", "POST"))
@@ -158,7 +159,7 @@ def list_objects(list_object):
 
     columns = tables[list_object]
     query = "SELECT * FROM {}".format(table)
-    total_sql = "SELECT count(*) FROM {}".format(table)
+    total_sql = "SELECT * FROM {}".format(table)
     if searchValue:
         query += " WHERE "
         flag = 0 # notify wether OR if needed
@@ -176,25 +177,21 @@ def list_objects(list_object):
     print(__name__ + ": --------sql----------------------")
     cur = get_db().cursor()
     
+    # total students
+    total = cur.execute(total_sql)
+    
     # table list
     # query = "SELECT * FROM {}".format(table)
+    ftotal = 0
     if searchValue:
-        cur.execute(query, [f"%{searchValue}%"] * len(columns))
+        ftotal = cur.execute(query, [f"%{searchValue}%"] * len(columns))
     else:
-        cur.execute(query)
+        ftotal = cur.execute(query)
+        ftotal = total
     results = cur.fetchall()  # is list
-    
-    # total students
-    cur.execute(total_sql)
-    total = cur.fetchone()
-    
-    # total num
-    cur.execute(total_sql)
-    total_num = cur.fetchone()
-    total = int(total_num['count(*)'])
-    
+
     data = {
-        'recordsFiltered': total,
+        'recordsFiltered': ftotal,
         'recordsTotal': total,
         'draw': draw,
         'data': results
@@ -575,11 +572,12 @@ def updateTeacher():
     if result < 1:
         error = "TeacherNo does not exist, please check: " + teacher_no
         flash(error, 'danger')
-        return redirect(url_for("stmt.adminUser")) 
+        return redirect(url_for("stmt.adminTeacher")) 
     if any(x is None for x in [teacher_no, teacher_name, gender]):
         error = "Null value submited, student info not changed! " + str([teacher_no, teacher_name, gender])
         flash(error, 'danger')
-        return redirect(url_for("stmt.adminStudents"))
+        return redirect(url_for("stmt.adminTeacher"))
+    
     result = cur.execute(
                         "update tb_teacher set"
                         " teacher_name = %s,"
@@ -587,10 +585,11 @@ def updateTeacher():
                         " where teacher_no=%s", [teacher_name, gender, teacher_no]
                          )
     db.commit()
+    # 未修改时 返回0，后面用 try except 捕获错误
     if result < 1:
-        error = "Failed during update teacher. Teacher: " + str([teacher_no, teacher_name, gender])
+        error = "Info not changed. Teacher: " + str([teacher_no, teacher_name, gender])
         flash(error, 'danger')
-        return redirect(url_for("stmt.adminUser"))
+        return redirect(url_for("stmt.adminTeacher"))
         
     success = "Teacher info has just been changed: " + str([teacher_no, teacher_name, gender])
     flash(success, 'success')
@@ -654,7 +653,88 @@ def adminCourse():
     Returns:
         template: introduction template
     """
-    return render_template("stmt/introduction.html")
+    return render_template("stmt/admin-course.html")
+
+@bp.route("/admin/list/course", methods=("GET", "POST"))
+@login_required
+def listCourse():
+    """ API to return all course lines 
+        response to: http://127.0.0.1:5000/admin/list/course
+        
+    Returns:
+        objects: list from course table
+    """
+
+    # arguments
+    # post
+    if request.method == "POST":
+        draw = request.values.get('draw')
+        start = request.values.get('start')
+        length = request.values.get('length')
+        searchValue = request.values.get('search[value]')
+        order_col = request.values.get("order[0][column]")
+        order_direction = request.values.get("order[0][dir]")
+    # get
+    if request.method == "GET":
+        draw = request.args.get('draw') 
+        start = request.args.get('start') 
+        length = request.args.get('length') 
+        searchValue = request.args.get('search[value]') 
+        order_col = request.values.get("order[0][column]")
+        order_direction = request.values.get("order[0][dir]")
+    print("draw: " + draw)
+    print("start: " + start)
+    print("length: " + length)
+    print("searchValue: " + searchValue)
+    print("order_col: " + order_col)   # colum number
+    print("order_direction: " + order_direction)  # desc or asc
+    # SELECT storename, cn, ip, changedate, expiredate, status from tunovpnclients 
+    # WHERE (storename LIKE ? OR cn LIKE ? or ip LIKE ?) 
+    # ORDER BY status desc 
+    # LIMIT ? OFFSET ?
+    query = None
+
+    # prepare sql for tb_student
+    # cursor.execute("SELECT * FROM test WHERE text LIKE %s", f"%{param}%") # sql prepare
+    columns = ["course_no", "course_name", "teacher_name", "student_num"]
+    query = "select c.course_no, c.course_name, \
+(select teacher_name from  tb_teacher as t where c.teacher_no=t.teacher_no ) as teacher_name, \
+(select count(s.id) from  tb_score as s where c.course_no=s.course_no ) as student_num \
+from  tb_course as c"
+    total_sql = query
+    if searchValue:
+        query += " WHERE course_no like %s OR course_name LIKE %s OR teacher_name like %s "
+
+    query += " ORDER BY {0} {1}".format(columns[ int(order_col) - 1 ], order_direction)
+    if length:
+        query += " LIMIT {0} OFFSET {1}".format(length, start)
+    print(__name__ + ": --------sql----------------------")
+    print(query)
+    print(__name__ + ": --------sql----------------------")
+    cur = get_db().cursor()
+    
+    # toal num
+    total = cur.execute(total_sql)
+    
+    # table list
+    # query = "SELECT * FROM {}".format(table)
+    result = 0
+    if searchValue:
+        ftotal = cur.execute(query, [f"%{searchValue}%"] * (len(columns) - 1))
+    else:
+        ftotal = cur.execute(query)
+        ftotal = total
+    results = cur.fetchall()  # is list
+
+    data = {
+        'recordsFiltered': ftotal,
+        'recordsTotal': total,
+        'draw': draw,
+        'data': results
+    }
+    
+    return data
+
 
 #####################
 # admin score management views

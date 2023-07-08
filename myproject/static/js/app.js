@@ -317,6 +317,127 @@ $(document).ready(function() {
        admin course page functions
     ********************************************** */
 
+    // table courses list tb_teachers_list
+    $("#tb_courses_list").DataTable({
+        "dom": '<"row"<"col"B><"col"f>>rt<"row"<"col"i><"col"p>>',
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        // "responsive": true, "lengthChange": true, "autoWidth": true,
+        "buttons": [{
+                extend: 'excel',
+                text: 'Excel',
+                exportOptions: {
+                    modifier: {
+                        page: 'all',
+                        selected: null,
+                        search: 'none',
+                    },
+                    columns: [0, 1, 2, 3, 4]
+                },
+            },
+            // { extend: 'excel', text: '<i class="fas fa-file-excel" aria-hidden="true"> Excel </i>' },
+            "colvis",
+            "pageLength"
+        ],
+        "lengthMenu": [10, 50, 100, "1000"],
+        "processing": true,
+        "serverSide": true,
+        "destroy": true,
+        "paging": true,
+        "ordering": true,
+        "order": [1, "asc"],
+        "ajax": {
+            'url': "admin/list/course",
+            'type': 'post',
+            'data': {},
+            'dataType': 'json',
+        },
+        "columnDefs": [{
+                "targets": 0,
+                "data": null,
+                "orderable": false,
+                render: function(data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "targets": 1,
+                "data": null,
+                "render": function(data, type, row) {
+                    return data["course_no"];
+                }
+            },
+            {
+                "targets": 2,
+                "data": null,
+                "render": function(data, type, row) {
+                    return data["course_name"];
+                }
+            },
+            {
+                "targets": 3,
+                "data": null,
+                "render": function(data, type, row) {
+                    return data["teacher_name"];
+                }
+            },
+
+            {
+                "targets": 4,
+                "data": null,
+                "render": function(data, type, row) {
+                    return data["student_num"];
+                }
+            },
+
+            {
+                "targets": 5,
+                "orderable": false,
+                "data": null,
+                "render": function(data, type, row) {
+                    // console.log(data[5]);
+                    if (data["course_no"]) {
+
+                        var html = "<button class='btn btn-primary' data-course-no=";
+                        html += data["course_no"];
+                        html += " data-toggle='modal' data-target='#updateCourse'>Edit</button>"
+                        html += "<button class='btn btn-danger' data-course-no=";
+                        html += data["course_no"];
+                        html += " data-toggle='modal' data-target='#deleteCourse'>Delete</button>"
+                        return html;
+                    }
+
+                }
+            },
+        ],
+    });
+
+    $('#updateCourse').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget)
+        var courseNo = button.data('course-no')
+        var modal = $(this)
+        var params = {
+            "courseNo": courseNo
+        }
+        $.ajax({
+            url: '${pageContext.request.contextPath}/getCourse',
+            type: "get",
+            data: params,
+            success: function(result) {
+                modal.find('#update-course-no').val(result.courseNo)
+                modal.find('#update-course-name').val(result.courseName)
+                modal.find('#update-course-teacher').val(result.teacherNo)
+            }
+        })
+    })
+
+    $('#deleteCourse').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget)
+        var courseNo = button.data('course-no')
+        var modal = $(this)
+        modal.find('#delete-course-no').val(courseNo)
+    })
 
     /* **********************************************
        admin score page functions
