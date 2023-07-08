@@ -77,11 +77,11 @@
 			</div>
 		</div>
 
-		<!-- add student user -->
+		{# add student user #}
 		<div class="modal fade" id="addStudentUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<form action="admin/user/addStudent" method="post">
+					<form action="{{ url_for('stmt.addStudentUser') }}" method="post">
 						<div class="modal-header">
 							<h4 class="modal-title" id="myModalLabel">Add student account</h4>
 							<button type="button" class="close" data-dismiss="modal"
@@ -94,7 +94,7 @@
 							<div class="form-group"></div>
 
 							<div class="form-group">
-								<label for="student-no" class="control-label">学号:</label>
+								<label for="student-no" class="control-label">学生(Only unregistered):</label>
 								<select class="form-control" name="student_no" id="student-no">
 
 								</select>
@@ -124,11 +124,11 @@
 			</div>
 		</div>
 
-		<!-- add teacher user -->
+		{# add teacher user #}
 		<div class="modal fade" id="addTeacherUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<form action="admin/user/addTeacher">
+					<form action="{{ url_for('stmt.addTeacherUser') }}" method="post">
 						<div class="modal-header">
 							<h4 class="modal-title" id="myModalLabel">Add teacher account</h4>
 							<button type="button" class="close" data-dismiss="modal"
@@ -141,17 +141,13 @@
 							<div class="form-group"></div>
 
 							<div class="form-group">
-								<label for="teacher-no" class="control-label">学生:</label> <select
-									class="form-control" name="studentNo" id="teacher-no">
-									<c:forEach var="student" items="${students }" varStatus="status">
-										<option value="${student.studentNo }">${student.studentName }</option>
-									</c:forEach>
-								</select>
+								<label for="teacher-no" class="control-label">用户名:</label> 
+								<input type="text" class="form-control" name="username" id="user-teacher-password" required>
 							</div>
 
 							<div class="form-group">
 								<label for="user-teacher-password" class="control-label">密码:</label> 
-								<input type="text" class="form-control" name="password" id="user-teacher-password">
+								<input type="password" class="form-control" name="password" id="user-teacher-password" required>
 							</div>
 
 						</div>
@@ -164,12 +160,56 @@
 			</div>
 		</div>
 
-		<!-- delete user -->
+		{# update student #}
+		<div class="modal fade" id="updateUser" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form action="{{ url_for('stmt.updateUser') }}" method="post">
+						<div class="modal-header">
+							<h4 class="modal-title" id="udpate-myModalLabel">更新用户信息</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+
+								<label for="update-user_id" class="control-label">UserID:</label> 
+								<input type="text" class="form-control" name="user_id" id="update-user_id" readonly>
+							</div>
+
+							<div class="form-group">
+								<label for="update-username" class="control-label">Username:</label> 
+								<input type="text" class="form-control" name="username" id="update-username" required>
+							</div>
+
+							<div class="form-group">
+								<label for="update-password" class="control-label">Password:</label> 
+								<input type="password" class="form-control"  name="password" id="update-password" required>
+							</div>
+
+							<div class="form-group">
+								<label for="update-display_name" class="control-label">Dispaly name:</label> 
+								<input type="text" class="form-control" name="display_name" id="update-display_name">
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">提交</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		{# delete user #}
 		<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog"
 			aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<form action="admin/delete/user" method="post">
+					<form action="{{ url_for('stmt.deleteUser') }}" method="post">
 						<div class="modal-header">
 							<h4 class="modal-title" id="udpate-myModalLabel">Delete account info</h4>
 							<button type="button" class="close" data-dismiss="modal"
@@ -194,6 +234,8 @@
 				</div>
 			</div>
 		</div>
+
+
 	</section>
 </div>
 

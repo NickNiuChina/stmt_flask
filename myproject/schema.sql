@@ -60,8 +60,8 @@ CREATE TABLE `tb_student` (
    `age` int DEFAULT NULL COMMENT 'Age',
    `gender` tinyint DEFAULT NULL COMMENT 'Gender，1M，2F',
    `year` char(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Enrollment Year',
-   `create_time` datetime DEFAULT (CURRENT_DATE),
-   `update_time` datetime DEFAULT (CURRENT_DATE),
+   `create_time` datetime DEFAULT (CURRENT_TIMESTAMP),
+   `update_time` datetime DEFAULT (CURRENT_TIMESTAMP),
    PRIMARY KEY (`student_no`) USING BTREE,
    UNIQUE KEY `id_card_UNIQUE` (`id_card`),
    UNIQUE KEY `student_name_UNIQUE` (`student_name`)
@@ -128,8 +128,8 @@ CREATE TABLE `tb_teacher`  (
   `teacher_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `teacher_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `gender` tinyint NULL DEFAULT NULL COMMENT 'Gender: 1M，2F',
-  `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
-  `update_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
+  `create_time` datetime(0) NULL DEFAULT (CURRENT_TIMESTAMP),
+  `update_time` datetime(0) NULL DEFAULT (CURRENT_TIMESTAMP),
   PRIMARY KEY (`teacher_no`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -157,8 +157,8 @@ CREATE TABLE `tb_course`  (
   `course_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Course',
   `teacher_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Teacher',
   `student_num` int NULL DEFAULT NULL COMMENT 'Student num',
-  `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
-  `update_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
+  `create_time` datetime(0) NULL DEFAULT (CURRENT_TIMESTAMP),
+  `update_time` datetime(0) NULL DEFAULT (CURRENT_TIMESTAMP),
   PRIMARY KEY (`course_no`) USING BTREE,
   CONSTRAINT `fk_course_teacher` FOREIGN KEY (teacher_no) REFERENCES tb_teacher (teacher_no) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -188,8 +188,8 @@ CREATE TABLE `tb_score`  (
   `course_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Course no',
   `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'student id',
   `score` float NULL DEFAULT NULL COMMENT 'Score',
-  `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
-  `update_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
+  `create_time` datetime(0) NULL DEFAULT (CURRENT_TIMESTAMP),
+  `update_time` datetime(0) NULL DEFAULT (CURRENT_TIMESTAMP),
   PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT `fk_score_course` FOREIGN KEY (course_no) REFERENCES tb_course (course_no) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_score_student` FOREIGN KEY (student_no) REFERENCES tb_student (student_no) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -339,11 +339,11 @@ CREATE TABLE `tb_user` (
    `user_type` tinyint DEFAULT NULL COMMENT '1admin，0student',
    `username` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Account name',
    `password` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'password',
-   `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'student_No',
+   `student_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT 'student_No',
    `display_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'display name',
    `status` tinyint NOT NULL DEFAULT '1' COMMENT 'Status，1enabled，2disabled',
-   `create_time` datetime DEFAULT (CURRENT_DATE),
-   `update_time` datetime DEFAULT (CURRENT_DATE),
+   `create_time` datetime DEFAULT (CURRENT_TIMESTAMP),
+   `update_time` datetime DEFAULT (CURRENT_TIMESTAMP),
    PRIMARY KEY (`user_id`) USING BTREE,
    UNIQUE KEY `username_UNIQUE` (`username`)
  ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
@@ -375,7 +375,7 @@ CREATE TABLE `tb_login_history`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NULL DEFAULT NULL,
   `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `create_time` datetime(0) NULL DEFAULT (CURRENT_DATE),
+  `create_time` datetime(0) NULL DEFAULT (CURRENT_TIMESTAMP),
   PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT `fk_login-history_user` FOREIGN KEY (user_id) REFERENCES tb_user (user_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;

@@ -143,7 +143,7 @@ $(document).ready(function() {
                     // console.log(data[5]);
                     if (data["student_no"]) {
 
-                        var html = "<button class='btn btn-default' data-student-no=";
+                        var html = "<button class='btn btn-primary' data-student-no=";
                         html += data["student_no"];
                         html += " data-toggle='modal' data-target='#updateStudent'>Edit</button>"
                         html += "<button class='btn btn-danger' data-student-no=";
@@ -299,7 +299,7 @@ $(document).ready(function() {
                     // console.log(data[5]);
                     if (data["teacher_no"]) {
 
-                        var html = "<button class='btn btn-default' data-teacher-no=";
+                        var html = "<button class='btn btn-primary' data-teacher-no=";
                         html += data["teacher_no"];
                         html += " data-toggle='modal' data-target='#updateTeacher'>Edit</button>"
                         html += "<button class='btn btn-danger' data-teacher-no=";
@@ -472,7 +472,8 @@ $(document).ready(function() {
                 "data": null,
                 "orderable": false,
                 render: function(data, type, row, meta) {
-                    return meta.row + 1;
+                    // return meta.row + 1;
+                    return data["user_id"];
                 }
             },
             {
@@ -539,6 +540,11 @@ $(document).ready(function() {
                             html += data["username"];
                             html += " data-user-status=" + data["status"]
                             html += " id='changeStatus'>" + op + "</button>"
+
+                            html += "<button class='btn btn-primary' data-user_id=";
+                            html += data["user_id"];
+                            html += " data-toggle='modal' data-target='#updateUser'>Edit</button>"
+
                             html += "<button class='btn btn-danger' data-username=";
                             html += data["username"];
                             html += " data-toggle='modal' data-target='#deleteUser'>Delete</button>"
@@ -551,6 +557,28 @@ $(document).ready(function() {
                 }
             },
         ],
+    });
+
+    $('#updateUser').on('shown.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var user_id = button.data('user_id');
+        var modal = $(this);
+        var params = {
+            "user_id": user_id
+        };
+        $.ajax({
+            url: 'admin/getUser',
+            type: "post",
+            data: params,
+            success: function(result) {
+                user = result[0];
+                console.log(result);
+                modal.find('#update-user_id').val(user.user_id);
+                modal.find('#update-username').val(user.username);
+                modal.find('#update-password').val('000000');
+                modal.find('#update-display_name').val(user.display_name);
+            }
+        })
     });
 
     $('#deleteUser').on('shown.bs.modal', function(event) {
@@ -577,6 +605,7 @@ $(document).ready(function() {
         $.ajax({
             url: 'admin/getStudents',
             type: "post",
+            data: { "unregistered": 1 },
             success: function(result) {
                 // var students = result[0];
                 // console.log(result);

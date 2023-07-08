@@ -28,7 +28,6 @@
 	  <div class="container-fluid">
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="row">
-
 					<div class="col-sm-5">
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#addStudent">Add student</button>
@@ -80,7 +79,7 @@
 		aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<form action="admin/add/student" method="post">
+				<form action="{{ url_for('stmt.addStudent') }}" method="post">
 					<div class="modal-header">
 						<h4 class="modal-title" id="myModalLabel">录入学生信息</h4>
 						<button type="button" class="close" data-dismiss="modal"
@@ -105,8 +104,8 @@
 						</div>
 
 						<div class="form-group">
-							<label for="gender" class="control-label">性别:</label> <select
-								class="form-control" name="gender" id="gender">
+							<label for="gender" class="control-label">性别:</label> 
+							<select class="form-control" name="gender" id="gender">
 								<option value="1">男</option>
 								<option value="2">女</option>
 							</select>
@@ -121,8 +120,6 @@
 							<label for="year" class="control-label">入学年份:</label> 
 							<input type="text" class="form-control" name="year" id="year" required>
 						</div>
-
-
 
 					</div>
 					<div class="modal-footer">
@@ -142,8 +139,7 @@
 				<form action="{{ url_for('stmt.updateStudent') }}" method="post">
 					<div class="modal-header">
 						<h4 class="modal-title" id="udpate-myModalLabel">更新学生信息</h4>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 						
@@ -167,8 +163,8 @@
 
 
 						<div class="form-group">
-							<label for="update-gender" class="control-label">性别:</label> <select
-								class="form-control" name="gender" id="udpate-gender">
+							<label for="update-gender" class="control-label">性别:</label> 
+							<select class="form-control" name="gender" id="udpate-gender">
 								<option value="1">男</option>
 								<option value="2">女</option>
 							</select>
@@ -183,8 +179,6 @@
 							<label for="update-year" class="control-label">入学年份:</label> 
 							<input type="text" class="form-control" name="year" id="update-year" required>
 						</div>
-
-
 
 					</div>
 					<div class="modal-footer">
@@ -201,11 +195,10 @@
 		aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<form action="admin/delete/student" method="post">
+				<form action="{{ url_for('stmt.deleteStudent') }}" method="post">
 					<div class="modal-header">
 						<h4 class="modal-title" id="udpate-myModalLabel">删除学生信息</h4>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>						
 					</div>

@@ -13,6 +13,7 @@ import datetime
 import re
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
+from pymysql.err import IntegrityError
 
 from myproject.auth import login_required
 from myproject.db import get_db
@@ -252,13 +253,26 @@ def getStudents():
     """admin-stutents API
 
     Returns:
-        students: all students object
+        students: all students object or unregistered student
     """
-    cur = get_db().cursor()
     
-    # students list
-    cur.execute("select * from tb_student")
-    students = cur.fetchall()
+    if request.method == "POST":
+        unregistered = request.values.get('unregistered')
+    
+    cur = get_db().cursor()
+    students = None
+    if unregistered == '1':
+        # return only unregistered students
+        cur.execute("SELECT * FROM tb_student AS ts"
+                    " WHERE NOT EXISTS ("
+                    " SELECT *"
+                    " FROM tb_user AS tu" 
+                    " WHERE ts.student_no=tu.student_no)"
+                    )
+        students = cur.fetchall()
+    else: 
+        cur.execute("select * from tb_student")
+        students = cur.fetchall()
     return jsonify(students)
 
 def is_valid_id_card(id_card):
@@ -321,9 +335,23 @@ def addStudent():
         error = "Please check year or age: " + str([age, year])
         flash(error, 'danger')
         return redirect(url_for("stmt.adminStudent")) 
+    
+    # if duplicated info: id, name, no
           
     db = get_db()
     cur = db.cursor()
+    
+    result = cur.execute( 
+                         "select * from tb_student where student_no = %s "
+                         " or student_name=%s "
+                         " or id_card = %s", [student_no, student_name, id_card]
+                         )
+    if result > 0:
+        error = "Duplicated studentno or studentname or ID: " + str([student_no, student_name, id_card])
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminStudent"))        
+    
+    
     result = cur.execute(
         "insert into tb_student"
         " (student_no, student_name, id_card, gender, age, year)"
@@ -461,6 +489,159 @@ def getTeacher():
     teachers = cur.fetchall()
     return jsonify(teachers)
 
+@bp.route("/admin/add/teacher", methods=("POST",))
+@login_required
+def addTeacher():
+    """ add a teacher
+        
+    Returns:
+        result: redirect to teacher admin page with failure/sucess
+    """
+    # arguments
+    # post
+    result = None
+    if request.method == "POST":
+        teacher_no = request.values.get('teacher_no')
+        teacher_name = request.values.get('teacher_name')
+        gender = request.values.get('gender')
+
+    args = [teacher_no, teacher_name, gender]
+
+    # if null value submitted
+    if not all(x for x in args):
+        error = "Failed to add teacher info! Null value submitted: " + str(args)
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminStudent"))
+
+    if not (int(gender) == 1 or int(gender) == 2):
+        error = "Invalidate gender: " + str(gender)
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminStudent"))
+     
+    db = get_db()
+    cur = db.cursor()
+    result = cur.execute( 
+                         "select * from tb_teacher where teacher_no = %s ", [teacher_no,]
+                         )
+    if result > 0:
+        error = "Duplicated teacherno: " + str([teacher_no,])
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminTeacher"))    
+    
+
+    result = cur.execute(
+        "insert into tb_teacher"
+        " (teacher_no, teacher_name, gender)"
+        " VALUES (%s, %s, %s)",
+        (teacher_no, teacher_name, gender)
+    )
+    db.commit()
+
+    if result < 1:
+        error = "Something wrong: " + str(args)
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminStudent"))
+
+    success = "Add teacher info successfully. Teacher: " + str(args)
+    flash(success, 'success')    
+    return redirect(url_for("stmt.adminTeacher"))
+
+
+@bp.route("/admin/updateTeacher", methods=("POST",))
+@login_required
+def updateTeacher():
+    """admin-teacher update teacher
+
+    Returns:
+        teachers: to teacher admin page with update result failure/success
+    """
+    # post
+    if request.method == "POST":
+        teacher_no = request.values.get('teacherNo')
+        teacher_name = request.values.get('teacherName')
+        gender = request.values.get('gender')
+        
+    # get
+    if request.method == "GET":
+        teacher_no = request.args.get('teacherNo')    
+        teacher_name = request.args.get('teacherName')    
+        gender = request.args.get('gender')    
+    
+    db = get_db()
+    cur = db.cursor()
+    
+    # students list
+    result = cur.execute("select * from tb_teacher where teacher_no = %s", (teacher_no,))
+    if result < 1:
+        error = "TeacherNo does not exist, please check: " + teacher_no
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminUser")) 
+    if any(x is None for x in [teacher_no, teacher_name, gender]):
+        error = "Null value submited, student info not changed! " + str([teacher_no, teacher_name, gender])
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminStudents"))
+    result = cur.execute(
+                        "update tb_teacher set"
+                        " teacher_name = %s,"
+                        " gender = %s"
+                        " where teacher_no=%s", [teacher_name, gender, teacher_no]
+                         )
+    db.commit()
+    if result < 1:
+        error = "Failed during update teacher. Teacher: " + str([teacher_no, teacher_name, gender])
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminUser"))
+        
+    success = "Teacher info has just been changed: " + str([teacher_no, teacher_name, gender])
+    flash(success, 'success')
+    # return render_template("stmt/admin-teacher.html")
+    return redirect(url_for("stmt.adminTeacher"))
+
+@bp.route("/admin/delete/teacher", methods=("GET", "POST"))
+@login_required
+def deleteTeacher():
+    """ delete a teacher by teacher_no
+        
+    Returns:
+        result: redirect to teacher admin page with failure/sucess
+    """
+    # arguments
+    # post
+    if request.method == "POST":
+        teacher_no = request.values.get('teacher_no')
+
+    # get
+    if request.method == "GET":
+        teacher_no = request.args.get('teacher_no') 
+   
+    db = get_db()
+    cur = db.cursor()
+    cur.execute(
+        "SELECT teacher_no FROM tb_teacher where teacher_no=%s", (teacher_no,)
+    )
+    user = cur.fetchone()
+    if user is None:
+        error = "The teacher does not existed: " + teacher_no
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminTeacher"))
+
+    try:
+        cur.execute("delete from tb_teacher where teacher_no = %s", (teacher_no,))
+        db.commit()
+    except IntegrityError as e:
+        error = "Failed during delete teacher info cause this teacher is referenced somewhere. Error: " + str(e)
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminTeacher"))
+    except Exception as e:
+        error = "Failed during delete teacher info cause this teacher is referenced somewhere. Error: " + str(e)
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminTeacher"))
+   
+    success = "Delete user successfully. Teacher_no: " + teacher_no
+    flash(success, 'success')    
+    return redirect(url_for("stmt.adminTeacher"))
+
+
 #####################
 # admin course management views
 #####################
@@ -502,6 +683,73 @@ def adminUser():
         template: introduction template
     """
     return render_template("stmt/admin-user.html")
+
+@bp.route("/admin/updateUser", methods=("POST",))
+@login_required
+def updateUser():
+    """update-user url
+
+    Returns:
+        redirect: Return to user list with failure/success
+    """
+    user_id = None
+    username = None
+    password = None
+    display_name = None
+
+    if request.method == "POST":
+        user_id = request.values.get('user_id')
+        username = request.values.get('username')
+        password = request.values.get('password')
+        display_name = request.values.get('display_name')
+    if any(x is None for x in [username, password]):
+        error = "Null value submited, Info: " + str([username, password])
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminUser"))
+    
+    args = [user_id, username, password, display_name]    
+    cur = get_db().cursor()
+    
+    # students list
+    update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    result = cur.execute("update tb_user set" 
+                " username=%s,"
+                " password=%s,"
+                " display_name=%s,"
+                " update_time=%s"
+                " where user_id=%s", [username, generate_password_hash(password), display_name, update_time, user_id])
+    get_db().commit()
+    if result < 1:
+        error = "Failed during update user. User: " + username
+        flash(error, 'danger')
+        return redirect(url_for("stmt.adminUser"))
+    
+    success = "User info has just been changed! User: " + str(args)
+    flash(success, 'success')
+    return redirect(url_for("stmt.adminUser"))
+
+@bp.route("/admin/getUser", methods=("GET", "POST"))
+@login_required
+def getUser():
+    """admin-user get a user by user_id
+
+    Returns:
+        students: students object
+    """
+    user_id = None
+    # post
+    if request.method == "POST":
+        user_id = request.values.get('user_id')
+    # get
+    if request.method == "GET":
+        user_id = request.args.get('user_id')    
+    
+    cur = get_db().cursor()
+    
+    # students list
+    cur.execute("select * from tb_user where user_id = %s", (user_id,))
+    user = cur.fetchall()
+    return jsonify(user)
 
 @bp.route("/admin/delete/user", methods=("GET", "POST"))
 @login_required
@@ -604,7 +852,7 @@ def addStudentUser():
 
 @bp.route("/admin/user/addTeacher", methods=("POST",))
 @login_required
-def addTeachertUser():
+def addTeacherUser():
     """ add a teacher user account
         
     Returns:
@@ -612,22 +860,36 @@ def addTeachertUser():
     """
     # arguments
     if request.method == "POST":
-        username = request.values.get('student-username')
-        student_no = request.values.get('student_no')
+        username = request.values.get('username')
         password = request.values.get('password')
 
     # get
     if request.method == "GET":
-        username = request.args.get('student-username') 
-        student_no = request.args.get('student_no') 
+        username = request.args.get('username') 
         password = request.args.get('password') 
-
-    if username == "admin":
-        error = "You can not delete admin!"
-        flash(error, 'danger')
+    
+    db = get_db()
+    cur = db.cursor()
+    result = cur.execute(
+        "select * from tb_user where username=%s",(username,)
+    )
+    if result > 0:
+        danger = "This username has been used: " + username
+        flash(danger, 'danger')    
         return redirect(url_for("stmt.adminUser"))
     
-    success = "Add teacher user successfully. User: " + str([username, student_no, password])
+    result = cur.execute(
+        "insert into tb_user"
+        " (user_type, username, password, student_no, status)"
+        " VALUES (%s, %s, %s, %s, %s)", (1, username, generate_password_hash(password), 0, 1)
+    )
+    db.commit()
+    if result < 1:
+        danger = "Something wrong when add user. User: " + str([username, password])
+        flash(danger, 'danger')    
+        return redirect(url_for("stmt.adminUser"))      
+               
+    success = "Add teacher user successfully. User: " + str([username, password])
     flash(success, 'success')    
     return redirect(url_for("stmt.adminUser"))    
 
@@ -671,8 +933,10 @@ def toggleUser():
         user_status = 2
     else:
         user_status = 1
-    
-    result = cur.execute("update tb_user set status=%s where username = %s", (user_status, target_user))
+    update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    result = cur.execute("update tb_user set status=%s, update_time=%s where username = %s", 
+                         (user_status, update_time,target_user)
+                         )
     db.commit()
     if result < 1:
         error = "Failed during toggle user status. User: " + target_user

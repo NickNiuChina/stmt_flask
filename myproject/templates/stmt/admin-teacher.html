@@ -29,14 +29,20 @@
 			<div class="row">
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<div class="row">
-
 						<div class="col-sm-5">
 							<button type="button" class="btn btn-primary" data-toggle="modal"
 								data-target="#addTeacher">Add teacher</button>
 						</div>
-
 					</div>
-
+					{% with messages = get_flashed_messages(with_categories=true) %}
+					{% if messages %}
+						<ul class=flashes>
+						{% for category, message in messages %}
+						<div class="text-{{ category }}">{{ message }}</div>
+						{% endfor %}
+						</ul>
+					{% endif %}
+					{% endwith %}
 
 					<div class="table-responsive">
 						<table id="tb_teachers_list" class="table table-striped table-bordered table-hover">
@@ -72,7 +78,7 @@
 			aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<form action="${pageContext.request.contextPath}/admin/addTeacher">
+					<form action="{{ url_for('stmt.addTeacher') }}" method="post">
 						<div class="modal-header">
 							<h4 class="modal-title" id="myModalLabel">Register teacher</h4>
 							<button type="button" class="close" data-dismiss="modal"
@@ -82,21 +88,18 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label for="teacher-no" class="control-label">Teacher No:</label> <input
-									type="text" class="form-control" name="teacherNo"
-									id="teacher-no">
+								<label for="teacher-no" class="control-label">Teacher No:</label> 
+								<input type="text" class="form-control" name="teacher_no" id="teacher-no" required>
 							</div>
 
 							<div class="form-group">
-								<label for="teacher-name" class="control-label">No:</label> <input
-									type="text" class="form-control" name="teacherName"
-									id="teacher-name">
+								<label for="teacher-name" class="control-label">Name:</label> 
+								<input type="text" class="form-control" name="teacher_name" id="teacher-name" required>
 							</div>
 
 							<div class="form-group">
-
-								<label for="gender" class="control-label">Gender:</label> <select
-									class="form-control" name="gender" id="gender">
+								<label for="gender" class="control-label">Gender:</label> 
+								<select class="form-control" name="gender" id="gender" required>
 									<option value="1">Male</option>
 									<option value="2">Female</option>
 								</select>
@@ -118,7 +121,7 @@
 			aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<form action="${pageContext.request.contextPath}/admin/updateTeacher">
+					<form action="{{ url_for('stmt.updateTeacher') }}" method="post">
 						<div class="modal-header">
 							<h4 class="modal-title" id="myModalLabel">Update teacher info</h4>
 							<button type="button" class="close" data-dismiss="modal"
@@ -129,20 +132,17 @@
 						<div class="modal-body">
 							<div class="form-group">
 								<label for="update-teacher-no" class="control-label">Teacher No:</label>
-								<input type="text" readonly class="form-control" name="teacherNo"
-									id="update-teacher-no">
+								<input type="text" readonly class="form-control" name="teacherNo" id="update-teacher-no" required>
 							</div>
 
 							<div class="form-group">
 								<label for="update-teacher-name" class="control-label">Name:</label>
-								<input type="text" class="form-control" name="teacherName"
-									id="update-teacher-name">
+								<input type="text" class="form-control" name="teacherName" id="update-teacher-name" required>
 							</div>
 
 							<div class="form-group">
-
-								<label for="update-gender" class="control-label">Gender:</label> <select
-									class="form-control" name="gender" id="update-gender">
+								<label for="update-gender" class="control-label">Gender:</label> 
+								<select class="form-control" name="gender" id="update-gender">
 									<option value="1">Male</option>
 									<option value="2">Female</option>
 								</select>
@@ -163,7 +163,7 @@
 			aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<form action="${pageContext.request.contextPath}/admin/deleteTeacher">
+					<form action="{{ url_for('stmt.deleteTeacher') }}" method="post">
 						<div class="modal-header">
 							<h4 class="modal-title">Delete teacher info</h4>
 							<button type="button" class="close" data-dismiss="modal"
@@ -175,8 +175,7 @@
 							确认要删除该教师的所有信息吗（该操作不可逆）？
 							<div class="form-group hidden">
 								<label for="delete-teacher-no" class="control-label">工号:</label>
-								<input type="text" class="form-control" name="teacherNo"
-									id="delete-teacher-no">
+								<input type="text" class="form-control" name="teacher_no" id="delete-teacher-no" readonly>
 							</div>
 						</div>
 						<div class="modal-footer">
