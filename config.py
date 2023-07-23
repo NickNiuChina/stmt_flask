@@ -10,7 +10,8 @@ class Config(object):
 class ProductionConfig(Config):
     DEVELOPMENT = False
     DEBUG = False
-    SECRET_KEY = "dev"
+    # SECRET_KEY = "dev"
+    SECRET_KEY = "$2b$12$Y0QMIGwksa5OhtOBF9BczuAJ0hYMUv7esEBgMMdAuJ4V.7stwxT9e"
     # MySQL configurations 
     MYSQL_DATABASE_USER="stmtflask"
     MYSQL_DATABASE_PASSWORD = 'stmtflask'

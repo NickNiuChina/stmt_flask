@@ -122,7 +122,9 @@ def login():
                 return redirect(url_for("index"))
 
         flash(error)
-
+    current_app.logger.debug("------sdfsfsfsf-sdfsdfsd")
+    current_app.logger.info("------sdfsfsfsf-sdfsdfsd")
+    current_app.logger.critical("------sdfsfsfsf-sdfsdfsd")
     return render_template("auth/login.html")
 
 

@@ -8,6 +8,7 @@ import config
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.wrappers import Response
 
+import logging
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
@@ -52,6 +53,25 @@ def create_app(test_config=None):
     def hello():
         return "Hello, 中文!"
     
+    # logging
+    log_level = logging.INFO
+    for handler in app.logger.handlers:
+        app.logger.removeHandler(handler)
+    root = os.path.dirname(os.path.abspath(__file__))
+    print("root dir: " + app.root_path)
+    logdir = os.path.join(root, 'logs')
+    if not os.path.exists(logdir):
+        os.mkdir(logdir)
+    log_file = os.path.join(logdir, 'app.log')
+    log_file = 'app.log'
+    handler = logging.FileHandler(log_file)
+    handler.setLevel(log_level)
+    # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+    handler.setFormatter(formatter)
+    app.logger.addHandler(handler)
+    app.logger.setLevel(log_level)
+        
     # session expiration time
     @app.before_request
     def make_session_permanent():
