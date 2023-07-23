@@ -53,7 +53,7 @@ def create_app(test_config=None):
     def hello():
         return "Hello, 中文!"
     
-    # logging
+    # logging settings to file
     log_level = logging.INFO
     for handler in app.logger.handlers:
         app.logger.removeHandler(handler)
@@ -62,8 +62,8 @@ def create_app(test_config=None):
     logdir = os.path.join(root, 'logs')
     if not os.path.exists(logdir):
         os.mkdir(logdir)
-    log_file = os.path.join(logdir, 'app.log')
-    log_file = 'app.log'
+    # log_file = os.path.join(logdir, 'app.log')
+    log_file = app.config['LOGFILE']
     handler = logging.FileHandler(log_file)
     handler.setLevel(log_level)
     # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
