@@ -19,4 +19,6 @@ class ProductionConfig(Config):
     MYSQL_DATABASE_HOST = '127.0.0.1'
     SQL_FILE = 'schema.sql'
     VERSION = 'v1.0.0'
+    # Log file locations
+    # LOGFILE = 'D:\stmt_flask.log'
     LOGFILE = 'stmt_flask.log'
