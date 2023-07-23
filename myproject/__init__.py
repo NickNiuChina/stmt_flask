@@ -9,6 +9,7 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.wrappers import Response
 
 import logging
+from flask_babel import Babel
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
