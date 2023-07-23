@@ -8,6 +8,9 @@ Jinja2==3.1.2             # via flask
 MarkupSafe==2.1.2         # via flask
 Werkzeug==2.3.4           # via flask
 zipp==3.15.0              # via flask
+Babel==2.12.1
+flask-babel==3.1.0
+pytz==2023.3
 
 # mysql driver
 PyMySQL==1.0.3
