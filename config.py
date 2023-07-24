@@ -22,3 +22,6 @@ class ProductionConfig(Config):
     # Log file locations
     # LOGFILE = 'D:\stmt_flask.log'
     LOGFILE = 'stmt_flask.log'
+    
+    # i18n
+    

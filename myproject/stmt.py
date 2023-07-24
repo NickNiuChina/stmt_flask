@@ -86,7 +86,7 @@ def index():
                 " from tb_score sc, tb_student st, tb_course co where sc.course_no = co.course_no and sc.student_no = st.student_no"
                 " order by sc.score desc limit 10" )
     topScores = cur.fetchall()
-    
+    current_app.logger.info(g.user)
     return render_template("stmt/main.html", topScores=topScores, onlineUsers=onlineUsers)
 
 #################################################

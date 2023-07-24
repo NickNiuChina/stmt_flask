@@ -126,6 +126,8 @@ def login():
     current_app.logger.info("------sdfsfsfsf-sdfsdfsd")
     current_app.logger.critical("------sdfsfsfsf-sdfsdfsd")
     current_app.logger.info(request.accept_languages)
+    current_app.logger.info(g.user)
+    current_app.logger.info('----------------------------')
     return render_template("auth/login.html")
 
 
