@@ -37,6 +37,9 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.update(test_config)
 
+    # i18n config
+    
+    
     # ensure the instance folder exists or create it
     # try:
     #     os.makedirs(app.instance_path)
