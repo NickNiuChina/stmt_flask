@@ -85,6 +85,7 @@ def create_app(test_config=None):
     def make_session_permanent():
         session.permanent = True
         app.permanent_session_lifetime = datetime.timedelta(minutes=60)
+        app.logger.info("Before request logger!!")
     
     # server starttime
     start_datetime = datetime.datetime.now()
