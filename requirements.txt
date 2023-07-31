@@ -14,3 +14,5 @@ pytz==2023.3
 
 # mysql driver
 PyMySQL==1.0.3
+# for cache passowrd: 'cryptography' package is required for sha256_password or caching_sha2_password auth methods
+cryptography==41.0.2
