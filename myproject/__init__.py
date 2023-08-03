@@ -4,6 +4,7 @@ from flask import Flask
 import datetime, time
 from myproject import stmt
 from flask import session
+from flask import g, request
 import config
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.wrappers import Response
@@ -39,7 +40,26 @@ def create_app(test_config=None):
 
     # i18n config
     
-    
+    def get_locale():
+    # if a user is logged in, use the locale from the user settings
+        user = getattr(g, 'user', None)
+        if user is not None:
+            return user.locale
+        # otherwise try to guess the language from the user accept
+        # header the browser transmits.  We support de/fr/en in this
+        # example.  The best match wins.
+        # print("---------------------: " + request.accept_languages.best_match(['zh', 'en']))
+        return request.accept_languages.best_match(['zh', 'en'])
+
+    def get_timezone():
+        user = getattr(g, 'user', None)
+        if user is not None:
+            return user.timezone
+
+
+    # babel = Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
+    babel = Babel(app, locale_selector=get_locale)
+
     # ensure the instance folder exists or create it
     # try:
     #     os.makedirs(app.instance_path)

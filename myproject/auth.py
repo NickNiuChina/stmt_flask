@@ -10,6 +10,8 @@ from flask import session
 from flask import url_for
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
+from flask_babel import _
+from flask_babel import gettext, ngettext
 
 from myproject.db import get_db
 
@@ -121,7 +123,7 @@ def login():
                 # current_app.onlineUsers += 1 # session scope not correct
                 return redirect(url_for("index"))
 
-        flash(error)
+        flash(gettext(u'Username or password is not correct, please check!'))
     current_app.logger.debug("------sdfsfsfsf-sdfsdfsd")
     current_app.logger.info("------sdfsfsfsf-sdfsdfsd")
     current_app.logger.critical("------sdfsfsfsf-sdfsdfsd")
