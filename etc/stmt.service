@@ -1,0 +1,17 @@
+# https://blog.miguelgrinberg.com/post/running-a-flask-application-as-a-service-with-systemd
+# 链接中介绍了另一种启动worker的方式
+
+[Unit]
+Description=Stmt web application
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/microblog
+Environment=FLASK_CONFIG=production
+Environment=DATABASE_URL=sqlite:////path/to/the/database.sqlite
+ExecStart=/home/ubuntu/microblog/venv/bin/gunicorn -b localhost:8000 -w 4 microblog:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
