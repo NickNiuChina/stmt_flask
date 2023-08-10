@@ -1,3 +1,8 @@
+'''
+Flask 的工厂模式
+Created on 2023年8月10日
+@author: nick_niu
+'''
 import os
 
 from flask import Flask
@@ -13,7 +18,13 @@ import logging
 from flask_babel import Babel
 
 def create_app(test_config=None):
-    """Create and configure an instance of the Flask application."""
+    """
+        创建 Flask APP
+        @param test_config:
+        @return: flask.app.Flask
+        @throws Exception
+    """
+
     app = Flask(__name__, instance_relative_config=True)
     app.config['JSON_AS_ASCII'] = False
     # app.config.from_mapping(
