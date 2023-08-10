@@ -55,7 +55,18 @@ def create_app(test_config=None):
     # if a user is logged in, use the locale from the user settings
         user = getattr(g, 'user', None)
         if user is not None:
-            return user.locale
+            if user.get('locale'):
+                return user.locale
+        # get language from session
+        # if the user has set up the language manually it will be stored in the session,
+        # so we use the locale from the user settings
+        try:
+            language = session['language']
+        except KeyError:
+            language = None
+        if language is not None:
+            return language
+        
         # otherwise try to guess the language from the user accept
         # header the browser transmits.  We support de/fr/en in this
         # example.  The best match wins.
