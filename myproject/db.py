@@ -17,6 +17,7 @@ def get_db():
             user=current_app.config['MYSQL_DATABASE_USER'], 
             password=current_app.config['MYSQL_DATABASE_PASSWORD'], 
             database=current_app.config['MYSQL_DATABASE_DB'],
+            port=int(current_app.config['MYSQL_DATABASE_PORT']),
             cursorclass=pymysql.cursors.DictCursor
         )
         # g.db.row_factory = MySQL.Row
