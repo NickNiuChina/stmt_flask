@@ -17,6 +17,7 @@ from werkzeug.wrappers import Response
 import logging
 from flask_babel import Babel
 
+
 def create_app(test_config=None):
     """
         创建 Flask APP
@@ -24,8 +25,16 @@ def create_app(test_config=None):
         @return: flask.app.Flask
         @throws Exception
     """
+    # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    app = Flask(__name__, instance_relative_config=True)
+    # TEMPLATES DIR
+    TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
+    # STATIC_DIR
+    STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
+    app = Flask(__name__, instance_relative_config=True, template_folder=TEMPLATES_DIR, static_folder = STATIC_DIR)
     app.config['JSON_AS_ASCII'] = False
     # app.config.from_mapping(
     #     JSON_AS_ASCII = False,
@@ -170,6 +179,13 @@ def create_app(test_config=None):
                 print("\t", error)
                 print("\tSleep 20s\n")
                 time.sleep(20)
+
+    # print the config
+    print("------DEBUG: APP config---------------------------------")
+    for key in app.config.keys():
+        print("{key: <35}{val: <}".format(key=key + ":", val = str(app.config.get(key))))
+    # print(app.config.keys())
+    print("------APP config---------------------------------")
 
     # apply the blueprints to the app
     from myproject import auth
