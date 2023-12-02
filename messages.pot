@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-04 00:51+0800\n"
+"POT-Creation-Date: 2023-12-02 20:27+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,11 +21,11 @@ msgstr ""
 msgid "Username or password is not correct, please check!"
 msgstr ""
 
-#: myproject/templates/auth/login.html:18
+#: templates/auth/login.html:18
 msgid "Username"
 msgstr ""
 
-#: myproject/templates/auth/login.html:28
+#: templates/auth/login.html:28
 msgid "Password"
 msgstr ""
 
